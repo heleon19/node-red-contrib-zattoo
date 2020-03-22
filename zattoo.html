@@ -1,0 +1,132 @@
+<script type="text/javascript">
+    RED.nodes.registerType("zattoo-config", {
+        category: "config",
+        defaults: {
+            name: { value: "" },
+            lang: { value: "" },
+            domain: { value: "" },
+        },
+        credentials: {
+            username: { type: "text" },
+            password: { type: "password" }
+        },
+        label: function() {
+            return this.name || "zattoo-config";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="zattoo-config">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-username"><i class="fa fa-user"></i> Username</label>
+        <input type="text" id="node-config-input-username">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-password"><i class="fa fa-key"></i> Password</label>
+        <input type="password" id="node-config-input-password">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-lang"><i class="fa fa-language"></i> Language</label>
+        <input type="text" id="node-config-input-lang" placeholder="de">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-domain"><i class="fa fa-building"></i> Domain</label>
+        <input type="text" id="node-config-input-domain" placeholder="zattoo.com">
+    </div>
+</script>
+
+
+<script type="text/javascript">
+    RED.nodes.registerType("zattoo",{
+        category: "zattoo",
+        color: "#F3B567",
+        defaults: {
+            name: { value: "" },
+            zconfig: { value: "", type: "zattoo-config" },
+            request: { value: "session" },
+            channel: { value: "" }
+        },
+        inputs:1,
+        outputs:2,
+        icon: "feed.png",
+        label: function() {
+            return this.name || "zattoo";
+        },
+        labelStyle: function() {
+            return this.name ? "node_label_italic" : "";
+        },
+        oneditprepare: function() {
+          var input = $("#node-input-request");
+          input.change(function(e) {
+            var channel = $("#channel");
+            if (input.val() === "stream-urls") {
+              channel.show();
+            } else {
+              channel.hide();
+            }
+          });
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="zattoo">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-zconfig"><i class="fa fa-cogs"></i> Config</label>
+        <input type="text" id="node-input-zconfig">
+    </div>
+    <div class="form-row">
+        <label for="node-input-request"><i class="fa fa-terminal"></i> Request</label>
+        <select id="node-input-request" style="width: 70%">
+            <option value="session">Session Info</option>
+            <option value="channels">Channel List</option>
+            <option value="stream-urls">Stream URLs</option>
+        </select>
+    </div>
+    <div id="channel" class="form-row">
+        <label for="node-input-channel"><i class="fa fa-television"></i> Channel</label>
+        <input type="text" id="node-input-channel" placeholder="srf1">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="zattoo">
+  <p>Unofficial Zattoo Streaming API</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+      <dt class="optional">request<span class="property-type">string</span></dt>
+      <dd> the command to request:
+        <ul>
+          <li>session</li>
+          <li>channels</li>
+          <li>stream-urls</li>
+        </ul>
+      </dd>
+      <dt class="optional">channel <span class="property-type">string</span></dt>
+      <dd> the channel alias name.</dd>
+  </dl>
+
+ <h3>Outputs</h3>
+ <ol class="node-ports">
+     <li>Standard output
+         <dl class="message-properties">
+             <dt>payload <span class="property-type">string</span></dt>
+             <dd>the standard output of the command.</dd>
+         </dl>
+     </li>
+     <li>Standard error
+         <dl class="message-properties">
+             <dt>payload <span class="property-type">string</span></dt>
+             <dd>the standard error of the command.</dd>
+         </dl>
+     </li>
+ </ol>
+
+</script>
