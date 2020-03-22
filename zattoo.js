@@ -1,5 +1,7 @@
 const Zattoo = require("zattoo-unofficial-api");
 
+const HALF_DAY = 12 * 3600; // Seconds
+
 module.exports = function(RED) {
 
   function ZattooConfigNode(config) {
@@ -37,14 +39,21 @@ module.exports = function(RED) {
 
       node.on("input", async (msg) => {
         try {
+          const now = parseInt(Date.now() / 1000, 10);
+
           const request = msg.request || node.config.request;
           const channel = msg.channel || node.config.channel;
+          const start = msg.start || (now - HALF_DAY);
+          const end = msg.end || (now + HALF_DAY);
 
           if (request === "session") {
             msg.payload = await zattoo.getSessionInfo();
 
           } else if (request === "channels") {
             msg.payload = await zattoo.getChannelList();
+
+          } else if (request === "guide") {
+            msg.payload = await zattoo.getGuideInfo(start, end);
 
           } else if (request === "stream-urls") {
             msg.payload = await zattoo.getStreamUrls(channel);
