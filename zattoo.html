@@ -87,6 +87,7 @@
         <select id="node-input-request" style="width: 70%">
             <option value="session">Session Info</option>
             <option value="channels">Channel List</option>
+            <option value="guide">Guide Info</option>
             <option value="stream-urls">Stream URLs</option>
         </select>
     </div>
@@ -106,11 +107,13 @@
         <ul>
           <li>session</li>
           <li>channels</li>
+          <li>guide</li>
           <li>stream-urls</li>
         </ul>
       </dd>
-      <dt class="optional">channel <span class="property-type">string</span></dt>
-      <dd> the channel alias name.</dd>
+      <dt class="optional">channel <span class="property-type">string / object</span></dt>
+      <dd> the channel alias name or object with <code>cid</code> and <code>id</code>
+        of recall item ex. <code>{ "cid": "sf-1", "id": 181460763 }</code>.</dd>
   </dl>
 
  <h3>Outputs</h3>
