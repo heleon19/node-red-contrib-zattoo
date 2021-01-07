@@ -11,9 +11,8 @@ module.exports = function(RED) {
     node.zattoo = new Zattoo({
       "user": node.credentials.username,
       "password": node.credentials.password,
-      "lang": config.lang,
-      "domain": config.domain
-    });;
+      "lang": config.lang
+    });
 
     node.on("close", (removed, done) => {
       node.zattoo.close();
